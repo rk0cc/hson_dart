@@ -30,10 +30,10 @@ jobs:
       - name: Download library
         uses: wei/wget@v1.1.1
         with:
-          args: -O /home/runner/work/hson_dart/hson_dart/hson.zip https://github.com/rk0cc/hson/releases/download/1.0.0/hson_linux_amd64.zip
+          args: -O ${{ github.workspace }}/hson_dart/hson.zip https://github.com/rk0cc/hson/releases/download/1.0.0/hson_linux_amd64.zip
       - name: Setup unzip
         uses: TonyBogdanov/zip@1.0
         with:
-          args: unzip -q /home/runner/work/hson_dart/hson_dart/hson.zip
+          args: unzip -q ${{ github.workspace }}/hson_dart/hson.zip
       - name: Do test
         run: dart test
