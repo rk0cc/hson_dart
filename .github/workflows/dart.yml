@@ -28,13 +28,14 @@ jobs:
       - name: Setup unzip
         uses: TonyBogdanov/zip@1.0
         with:
-          args: unzip -q ~/hson.zip
+          args: unzip -q /github/home/hson.zip
       - name: Setup Dart
         uses: dart-lang/setup-dart@v1.3
         with:
           sdk: ${{ matrix.sdk }}
       - name: Get dependencies
         run: dart pub get
-      - run: mv ~/hson_linux_amd64.so ${{ github.workspace }}/hson.so
+      - name: Move library to workspace
+        run: mv /github/home/hson_linux_amd64.so ${{ github.workspace }}/hson.so
       - name: Do test
         run: dart test
