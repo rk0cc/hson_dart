@@ -37,5 +37,7 @@ jobs:
         run: dart pub get
       - name: Move library to workspace
         run: mv hson_linux_amd64.so ${{ github.workspace }}/hson.so
-      - name: Do test
-        run: dart test
+      - name: List dir
+        run: ls -l ${{ github.workspace }}
+      #- name: Do test
+      #  run: dart test
