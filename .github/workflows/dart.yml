@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.5
       - name: Setup Dart
-        uses: actions/setup-dart@v1.3
+        uses: dart-lang/setup-dart@v1.3
         with:
           sdk: ${{ matrix.sdk }}
       - name: Download library
