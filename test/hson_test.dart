@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:hson_dart/hson.dart';
+import 'package:hson_dart/hson_dart.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 

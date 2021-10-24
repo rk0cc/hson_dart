@@ -1,4 +1,4 @@
-import 'package:hson_dart/hson.dart';
+import 'package:hson_dart/hson_dart.dart';
 
 void main() {
   var h = HSON.getInstance();
