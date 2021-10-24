@@ -25,6 +25,8 @@ jobs:
         uses: dart-lang/setup-dart@v1.3
         with:
           sdk: ${{ matrix.sdk }}
+      - name: Get dependencies
+        run: dart pub get
       - name: Download library
         uses: wei/wget@v1.1.1
         with:
@@ -33,7 +35,5 @@ jobs:
         uses: TonyBogdanov/zip@1.0
         with:
           args: unzip -q /home/runner/work/hson_dart/hson_dart/hson.zip
-      - name: Get dependencies
-        run: dart pub get
       - name: Do test
         run: dart test
