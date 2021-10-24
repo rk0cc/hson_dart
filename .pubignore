@@ -1,1 +1,5 @@
-lib/hson.github
+*.so
+*.dll
+*.dylib
+
+hson/
