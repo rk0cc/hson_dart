@@ -5,9 +5,11 @@
 library hson_dart;
 
 import 'dart:convert';
-import 'dart:ffi';
+import 'dart:ffi' as ffi;
 import 'dart:io';
+
 import 'package:ffi/ffi.dart';
+import 'package:path/path.dart' as p;
 
 String get _dlName {
   String name = "hson";
@@ -65,11 +67,13 @@ class HSONFileException implements FileSystemException {
   String get path => _hsonPath;
 }
 
-typedef _ReadHSON = Pointer<Utf8> Function(Pointer<Utf8> path);
-typedef _WriteHSON = Int32 Function(Pointer<Utf8> context, Pointer<Utf8> path);
+typedef _ReadHSON = ffi.Pointer<Utf8> Function(ffi.Pointer<Utf8> path);
+typedef _WriteHSON = ffi.Int32 Function(
+    ffi.Pointer<Utf8> context, ffi.Pointer<Utf8> path);
 
-typedef _DReadHSON = Pointer<Utf8> Function(Pointer<Utf8> path);
-typedef _DWriteHSON = int Function(Pointer<Utf8> context, Pointer<Utf8> path);
+typedef _DReadHSON = ffi.Pointer<Utf8> Function(ffi.Pointer<Utf8> path);
+typedef _DWriteHSON = int Function(
+    ffi.Pointer<Utf8> context, ffi.Pointer<Utf8> path);
 
 /// ### Hash checked JSON storage in Dart implementation
 ///
@@ -78,23 +82,29 @@ typedef _DWriteHSON = int Function(Pointer<Utf8> context, Pointer<Utf8> path);
 /// The library binary is not included in this package
 class HSON {
   static HSON? _instance;
-  final DynamicLibrary _dl;
+  static String? _currentOpenPath;
+  final ffi.DynamicLibrary _dl;
 
   HSON._(this._dl);
 
   _DReadHSON get _nativeRead =>
-      _dl.lookup<NativeFunction<_ReadHSON>>("readHSON").asFunction();
+      _dl.lookup<ffi.NativeFunction<_ReadHSON>>("readHSON").asFunction();
 
   _DWriteHSON get _nativeWrite =>
-      _dl.lookup<NativeFunction<_WriteHSON>>("writeHSON").asFunction();
+      _dl.lookup<ffi.NativeFunction<_WriteHSON>>("writeHSON").asFunction();
 
   /// Get the instance of [HSON]
   ///
   /// The [HSON]'s library must be stored at the root directory of the
   /// executable project
-  static HSON getInstance() {
-    if (_instance == null) {
-      _instance = HSON._(DynamicLibrary.open(_dlName));
+  ///
+  /// Provide [libPath] that to override location of HSON library directory
+  /// and default uses the location that executing program
+  static HSON getInstance([String? libPath]) {
+    if (_instance == null ||
+        (_currentOpenPath != libPath && _instance != null)) {
+      _currentOpenPath = p.join(libPath ?? Directory.current.path, _dlName);
+      _instance = HSON._(ffi.DynamicLibrary.open(_currentOpenPath!));
     }
     return _instance!;
   }
