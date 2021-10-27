@@ -11,7 +11,33 @@ on:
 jobs:
   build:
     name: HSON test
+    strategy:
+      fail-fast: false
+      matrix:
+        sdk:
+          - stable
+          - beta
+          - dev
     runs-on: ubuntu-latest
     steps:
-      - name: Run it at your MOTHERFUCKING COMPUTER
-        run: ls -a
+      - uses: actions/checkout@v2.3.5
+      - name: Download library
+        uses: wei/wget@v1.1.1
+        with:
+          args: -O hson.zip https://github.com/rk0cc/hson/releases/download/1.0.0/hson_linux_amd64.zip
+      - name: Setup unzip
+        uses: TonyBogdanov/zip@1.0
+        with:
+          args: unzip -q hson.zip
+      - name: Rename library
+        run: mv hson_linux_amd64.so hson.so
+      - name: Remove original library script
+        run: rm lib/hson.dart
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1.3
+        with:
+          sdk: ${{ matrix.sdk }}
+      - name: Get dependencies
+        run: dart pub get
+      - name: Do test
+        run: dart test
