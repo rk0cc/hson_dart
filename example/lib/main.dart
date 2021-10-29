@@ -1,11 +1,11 @@
 import 'package:hson_dart/hson_dart.dart';
 
-void main() {
+void main() async {
   String hsonPath = "../hson/sample.hson";
 
-  var h = HSON.getInstance("../");
+  var h = await HSON.getInstance("../");
 
-  h.writeHSON<Map<String, String>>({"foo": "bar"}, hsonPath);
+  await h.writeHSON<Map<String, String>>({"foo": "bar"}, hsonPath);
 
-  print(h.readHSON(hsonPath));
+  print(await h.readHSON(hsonPath));
 }

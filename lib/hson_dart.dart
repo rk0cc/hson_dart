@@ -100,14 +100,14 @@ class HSON {
   ///
   /// Provide [libPath] that to override location of HSON library directory
   /// and default uses the location that executing program
-  static HSON getInstance([String? libPath]) {
-    if (_instance == null ||
-        (_currentOpenPath != libPath && _instance != null)) {
-      _currentOpenPath = p.join(libPath ?? Directory.current.path, _dlName);
-      _instance = HSON._(ffi.DynamicLibrary.open(_currentOpenPath!));
-    }
-    return _instance!;
-  }
+  static Future<HSON> getInstance([String? libPath]) => Future(() {
+        if (_instance == null ||
+            (_currentOpenPath != libPath && _instance != null)) {
+          _currentOpenPath = p.join(libPath ?? Directory.current.path, _dlName);
+          _instance = HSON._(ffi.DynamicLibrary.open(_currentOpenPath!));
+        }
+        return _instance!;
+      });
 
   /// Read the [HSON] context from [hsonPath]
   ///
@@ -115,25 +115,25 @@ class HSON {
   /// from library
   ///
   /// The return type of [readHSON] can be either [List] or [Map]
-  readHSON(String hsonPath) {
-    try {
-      String ctx = _nativeRead(hsonPath.toNativeUtf8()).toDartString();
-      assert(ctx != "");
-      return jsonDecode(ctx);
-    } catch (_) {
-      throw HSONFileException.read(hsonPath);
-    }
-  }
+  Future<dynamic> readHSON(String hsonPath) => Future(() {
+        try {
+          String ctx = _nativeRead(hsonPath.toNativeUtf8()).toDartString();
+          assert(ctx != "");
+          return jsonDecode(ctx);
+        } catch (_) {
+          throw HSONFileException.read(hsonPath);
+        }
+      });
 
   /// Writing [context] to [hsonPath]
   ///
   /// Throws [HSONFileException] if the exit returned non zero value
-  void writeHSON<J>(J context, String hsonPath) {
-    assert(context is Map<String, dynamic> || context is List<dynamic>);
-    int resErr = _nativeWrite(
-        jsonEncode(context).toNativeUtf8(), hsonPath.toNativeUtf8());
-    if (resErr != 0) {
-      throw HSONFileException.write(hsonPath, resErr);
-    }
-  }
+  Future<void> writeHSON<J>(J context, String hsonPath) => Future(() {
+        assert(context is Map<String, dynamic> || context is List<dynamic>);
+        int resErr = _nativeWrite(
+            jsonEncode(context).toNativeUtf8(), hsonPath.toNativeUtf8());
+        if (resErr != 0) {
+          throw HSONFileException.write(hsonPath, resErr);
+        }
+      });
 }
