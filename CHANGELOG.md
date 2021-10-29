@@ -1,3 +1,7 @@
+## 1.1.0
+
+- Return object as `Fututre`
+
 ## 1.0.1
 
 - Allow load library from snother direcotry
