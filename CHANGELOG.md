@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Adjust default path of library
+
 ## 1.1.0
 
 - Return object as `Fututre`

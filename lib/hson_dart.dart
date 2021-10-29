@@ -100,10 +100,16 @@ class HSON {
   ///
   /// Provide [libPath] that to override location of HSON library directory
   /// and default uses the location that executing program
+  ///
+  /// Default [libPath] value is current directory for Windows and
+  /// `/lib/hson` for most UNIX system
   static Future<HSON> getInstance([String? libPath]) => Future(() {
         if (_instance == null ||
             (_currentOpenPath != libPath && _instance != null)) {
-          _currentOpenPath = p.join(libPath ?? Directory.current.path, _dlName);
+          _currentOpenPath = p.join(
+              libPath ??
+                  (Platform.isWindows ? Directory.current.path : "/lib/hson"),
+              _dlName);
           _instance = HSON._(ffi.DynamicLibrary.open(_currentOpenPath!));
         }
         return _instance!;

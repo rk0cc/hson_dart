@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 
 void main() async {
   String samplePath = p.join("hson", "sample.hson");
-  HSON hson = await HSON.getInstance();
+  HSON hson = await HSON.getInstance(Directory.current.path);
   late File targetFile;
   late Directory hsonF;
   setUpAll(() async {

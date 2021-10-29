@@ -1,6 +1,6 @@
 name: hson_dart
 description: HSON Dart implementation
-version: 1.1.0
+version: 1.1.1
 homepage: https://www.rk0cc.xyz
 repository: https://github.com/rk0cc/hson_dart
 issue_tracker: https://github.com/rk0cc/will_pub/issues
