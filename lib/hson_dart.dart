@@ -108,7 +108,9 @@ class HSON {
             (_currentOpenPath != libPath && _instance != null)) {
           _currentOpenPath = p.join(
               libPath ??
-                  (Platform.isWindows ? Directory.current.path : "/lib/hson"),
+                  (Platform.isWindows
+                      ? Directory.current.path
+                      : "/${p.join("usr", "lib", "hson")}"),
               _dlName);
           _instance = HSON._(ffi.DynamicLibrary.open(_currentOpenPath!));
         }
