@@ -1,3 +1,7 @@
+## 1.1.2
+
+- Edit default path of library to `/usr/lib/hson`
+
 ## 1.1.1
 
 - Adjust default path of library
