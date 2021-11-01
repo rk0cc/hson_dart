@@ -24,7 +24,7 @@ jobs:
       - name: Download library
         run: curl https://github.com/rk0cc/hson/releases/download/1.0.0-action/hson_linux_amd64.zip --output hson.zip
       - name: Run unzip
-        run: 7z x hson.zip
+        run: 7z e hson.zip
       - name: Rename library and delete unused file
         run: mv hson_linux_amd64.so hson.so && rm hson.zip && rm hson_linux_amd64.h
       - name: Setup Dart
@@ -53,7 +53,7 @@ jobs:
       - name: Download library
         run: C:\msys64\usr\bin\wget.exe -O hson.zip https://github.com/rk0cc/hson/releases/download/1.0.0-action/hson_win_amd64.zip
       - name: Run unzip
-        run: 7z x hson.zip
+        run: 7z e hson.zip
       - name: Rename library and delete unused file
         run: ren hson_win_amd64.dll hson.dll && del hson.zip && del hson_win_amd64.h
       - name: Setup Dart
@@ -79,7 +79,7 @@ jobs:
       - name: Download library
         run: curl https://github.com/rk0cc/hson/releases/download/1.0.0-action/hson_macos_amd64.zip --output hson.zip
       - name: Run unzip
-        run: 7z x hson.zip
+        run: 7z e hson.zip
       - name: Rename library and delete unused file
         run: mv hson_macos_amd64.dylib hson.dylib && rm hson.zip && rm hson_macos_amd64.h
       - name: Setup Dart
