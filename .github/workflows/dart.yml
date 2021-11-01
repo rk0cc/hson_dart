@@ -22,13 +22,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.5
       - name: Download library
-        uses: wei/wget@v1.1.1
-        with:
-          args: -O hson.zip https://github.com/rk0cc/hson/releases/download/1.0.0/hson_linux_amd64.zip
+        run: curl https://github.com/rk0cc/hson/releases/download/1.0.0-action/hson_linux_amd64.zip --output hson.zip
       - name: Run unzip
-        uses: TonyBogdanov/zip@1.0
-        with:
-          args: unzip -q hson.zip
+        run: 7z x hson.zip
       - name: Rename library and delete unused file
         run: mv hson_linux_amd64.so hson.so && rm hson.zip && rm hson_linux_amd64.h
       - name: Setup Dart
@@ -55,11 +51,37 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.5
       - name: Download library
-        run: C:\msys64\usr\bin\wget.exe -O hson.zip https://github.com/rk0cc/hson/releases/download/1.0.0/hson_win_amd64.zip
+        run: C:\msys64\usr\bin\wget.exe -O hson.zip https://github.com/rk0cc/hson/releases/download/1.0.0-action/hson_win_amd64.zip
       - name: Run unzip
         run: 7z x hson.zip
       - name: Rename library and delete unused file
         run: ren hson_win_amd64.dll hson.dll && del hson.zip && del hson_win_amd64.h
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1.3
+        with:
+          sdk: ${{ matrix.sdk }}
+      - name: Get dependencies
+        run: dart pub get
+      - name: Do test
+        run: dart test
+  build_mac:
+    name: HSON test (macOS)
+    strategy:
+      fail-fast: false
+      matrix:
+        sdk:
+          - stable
+          - beta
+          - dev
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2.3.5
+      - name: Download library
+        run: curl https://github.com/rk0cc/hson/releases/download/1.0.0-action/hson_macos_amd64.zip --output hson.zip
+      - name: Run unzip
+        run: 7z x hson.zip
+      - name: Rename library and delete unused file
+        run: mv hson_macos_amd64.dylib hson.dylib && rm hson.zip && rm hson_macos_amd64.h
       - name: Setup Dart
         uses: dart-lang/setup-dart@v1.3
         with:
