@@ -1,3 +1,9 @@
+## 1.1.2+1
+
+- Update description
+- Restrict `ffi` accepted update range to patch
+    - It reduces the risk of incompatable
+
 ## 1.1.2
 
 - Edit default path of library to `/usr/lib/hson`
